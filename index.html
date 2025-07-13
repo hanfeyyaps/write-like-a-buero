@@ -226,7 +226,7 @@
 
             try {
                 // Call your backend to retrieve relevant chunks based on the user's input
-                const retrievalResponse = await fetch('http://127.0.0.1:5000/api/retrieve-style-manual-chunks', {
+                const retrievalResponse = await fetch('https://bureaucrat-app-backend-477384162998.us-central1.run.app/api/retrieve-style-manual-chunks', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: prompt })
