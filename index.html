@@ -41,12 +41,36 @@
             min-height: 200px; /* min-h-[200px] */
             overflow-y: auto; /* Enable vertical scrolling */
             word-wrap: break-word; /* Ensure long words break */
-            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            /* Removed white-space: pre-wrap; to allow proper list rendering */
         }
         /* Specific min-height for explanation div */
         .explanation-output-div {
             min-height: 100px; /* min-h-[100px] */
         }
+
+        /* --- FIX FOR DOT POINTS --- */
+        /* Ensure unordered lists within output divs display bullets and have padding */
+        .output-content-div ul,
+        .explanation-output-div ul {
+            list-style-type: disc; /* Force bullet points */
+            padding-left: 1.5rem; /* Add left padding for bullets to be visible */
+            margin-left: 0; /* Reset margin if Tailwind removes it, but keep padding */
+        }
+        /* Ensure list items themselves don't have excessive margin/padding if not needed */
+        .output-content-div li,
+        .explanation-output-div li {
+            margin-bottom: 0.5rem; /* Add a little space between list items */
+        }
+        /* --- END FIX FOR DOT POINTS --- */
+
+        /* --- FIX FOR PARAGRAPH SPACING --- */
+        /* Add margin to paragraphs within output divs for spacing */
+        .output-content-div p,
+        .explanation-output-div p {
+            margin-bottom: 1rem; /* Adds 16px space below each paragraph */
+        }
+        /* --- END FIX FOR PARAGRAPH SPACING --- */
+
     </style>
 </head>
 <body class="flex flex-col items-center min-h-screen">
@@ -304,9 +328,9 @@
 
                 // Second API call for explanation, ONLY if actionType === 'style'
                 if (actionType === 'style') {
-                    // MODIFIED PROMPT: Explicitly asking for "before" and "after" examples within the HTML list.
-                    // Emphasizing to avoid Markdown code block syntax again.
-                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, using Australian English spelling, grammar, and phrasing. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks.`;                    
+                    // MODIFIED PROMPT: Explicitly telling the model NOT to talk about HTML formatting changes.
+                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, using Australian English spelling, grammar, and phrasing. DO NOT discuss the presentation format or HTML tags used in the output. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks.`;
+                    
                     let explanationChatHistory = [{ role: "user", parts: [{ text: explanationPrompt }] }];
                     const explanationPayload = { contents: explanationChatHistory };
 
@@ -323,9 +347,10 @@
                         }
 
                         const explanationResult = await explanationResponse.json();
+                        // FIX: Changed 'result.candidates' to 'explanationResult.candidates' here
                         if (explanationResult.candidates && explanationResult.candidates.length > 0 &&
                             explanationResult.candidates[0].content && explanationResult.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
+                            explanationResult.candidates[0].content.parts.length > 0) {
                             // Strip Markdown code block fences before setting innerHTML
                             explanationOutput.innerHTML = stripMarkdownCodeBlocks(explanationResult.candidates[0].content.parts[0].text);
                         } else {
