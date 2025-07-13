@@ -255,8 +255,8 @@
                     let briefFormatGuidance = '';
                     if (selectedFormat === 'brief') {
                         briefFormatGuidance = `
-                        The brief should typically includes sections such as:
-                        - <strong>Title:</strong> Insert the title name here.
+                        The brief should start with a clear HTML <h2>Title</h2>.
+                        It typically includes sections such as:
                         - <strong>Purpose/Issue:</strong> Briefly state the main issue or decision required.
                         - <strong>Background:</strong> Provide concise, relevant context.
                         - <strong>Analysis/Discussion:</strong> Detail the key considerations, options, and their implications.
@@ -266,7 +266,8 @@
                         `;
                     }
                     // MODIFIED PROMPT: Added explicit instruction for Australian English and to avoid code block syntax.
-                    userPrompt = `${contextForLLM}You are an expert in the Australian Style Manual. Rewrite the following text to adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing. Your output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on requirements in the Australian Style Manual. ${briefFormatGuidance}\n\n"${prompt}"`;
+                    userPrompt = `${contextForLLM}You are an expert in the Australian Style Manual. Rewrite the following text to adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing. Your output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling. ${briefFormatGuidance}\n\n"${prompt}"`;
+
                 } else {
                     // This else block should ideally not be hit if only 'style' button is present
                     errorMessage.textContent = 'Invalid action type. Only "Apply Australian Style Manual" is supported.';
@@ -305,8 +306,7 @@
                 if (actionType === 'style') {
                     // MODIFIED PROMPT: Explicitly asking for "before" and "after" examples within the HTML list.
                     // Emphasizing to avoid Markdown code block syntax again.
-                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual. For each change, include a very short excerpt of "Before:" and "After:" example of the specific words or short phrases that were modified. Render these changes as a valid HTML dot point list with each change as a list item. Use HTML <strong> tags for bolding key terms within the explanation. Do not display any html tags to the user. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks.`;
-                    
+                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, using Australian English spelling, grammar, and phrasing. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks.`;                    
                     let explanationChatHistory = [{ role: "user", parts: [{ text: explanationPrompt }] }];
                     const explanationPayload = { contents: explanationChatHistory };
 
