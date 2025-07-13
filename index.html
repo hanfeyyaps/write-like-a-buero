@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Write Like a Bureaucrat App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Reverted body background to very light gray */
+        }
+        /* Custom scrollbar for divs that will render HTML */
+        .output-content-div::-webkit-scrollbar,
+        .explanation-output-div::-webkit-scrollbar {
+            width: 8px;
+        }
+        .output-content-div::-webkit-scrollbar-track,
+        .explanation-output-div::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        .output-content-div::-webkit-scrollbar-thumb,
+        .explanation-output-div::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .output-content-div::-webkit-scrollbar-thumb:hover,
+        .explanation-output-div::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Common styling for output divs to mimic textarea look */
+        .output-content-div,
+        .explanation-output-div {
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            background-color: #ffffff; /* Main content and output divs remain white */
+            color: #1f2937; /* gray-800 */
+            padding: 1rem; /* p-4 */
+            min-height: 200px; /* min-h-[200px] */
+            overflow-y: auto; /* Enable vertical scrolling */
+            word-wrap: break-word; /* Ensure long words break */
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+        }
+        /* Specific min-height for explanation div */
+        .explanation-output-div {
+            min-height: 100px; /* min-h-[100px] */
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen">
+    <!-- Header Section -->
+    <header class="w-full bg-gray-100 shadow-sm py-4 px-6 border-b border-gray-200"> <!-- Changed header background to gray-100 -->
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">How to Write Like a Bureaucrat App</h1>
+            <!-- Logo Placeholder with title attribute for tooltip -->
+            <img src="https://placehold.co/40x40/cccccc/ffffff?text=HY" alt="Logo Placeholder" class="rounded-full" title="Authorised by Han Fey Yap">
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center w-full p-4">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl border border-gray-100">
+            <h2 class="text-2xl font-semibold text-center text-gray-700 mb-4">Content Transformation Tool</h2>
+            <p class="text-center text-gray-600 mb-8">
+                Enter your content below and we will bureaucratise it.
+            </p>
+
+            <div class="mb-6">
+                <label for="inputText" class="block text-gray-700 text-sm font-medium mb-2">Your Content:</label>
+                <textarea id="inputText"
+                          class="w-full p-4 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out resize-y min-h-[150px] text-gray-800"
+                          placeholder="Paste your text here..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Audience Selection -->
+                <div>
+                    <label for="audienceSelect" class="block text-gray-700 text-sm font-medium mb-2">Target Audience:</label>
+                    <select id="audienceSelect"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out text-gray-800">
+                        <option value="general public">General Public</option>
+                        <option value="senior executives">Senior Executives</option>
+                        <option value="minister">Minister</option>
+                        <option value="academics/researchers">Academics/Researchers</option>
+                        <option value="technical experts">Technical Experts</option>
+                        <option value="students">Students</option>
+                        <option value="internal team">Internal Team</option>
+                    </select>
+                </div>
+
+                <!-- Output Format Selection -->
+                <div>
+                    <label for="formatSelect" class="block text-gray-700 text-sm font-medium mb-2">Output Format:</label>
+                    <select id="formatSelect"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out text-gray-800">
+                        <option value="article">Article</option>
+                        <option value="email">Email</option>
+                        <option value="brief">Brief</option>
+                        <option value="policy document">Policy Document</option>
+                        <option value="report">Report</option>
+                        <option value="press release">Press Release</option>
+                        <option value="website content">Website Content</option>
+                        <option value="social media post">Social Media Post</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-6"> <!-- Changed to grid-cols-1 as only one button remains -->
+                <button id="applyStyleButton"
+                        class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-md transition duration-300 ease-in-out shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                    Apply Australian Style Manual
+                </button>
+                <!-- Removed Summarize and Simplify buttons -->
+            </div>
+
+            <div id="loadingMessage" class="text-center text-blue-600 mt-4 hidden">
+                Processing your content...
+            </div>
+
+            <div class="mt-8">
+                <label for="outputText" class="block text-gray-700 text-sm font-medium mb-2">Output:</label>
+                <div id="outputText"
+                          class="output-content-div">
+                    <!-- Your processed content will appear here... -->
+                </div>
+            </div>
+
+            <!-- New section for explanation of changes - now a div -->
+            <div class="mt-8">
+                <label for="explanationOutput" class="block text-gray-700 text-sm font-medium mb-2">Explanation of Changes (Australian Style Manual):</label>
+                <div id="explanationOutput"
+                     class="explanation-output-div">
+                    <!-- Changes made based on the Australian Style Manual will be explained here... -->
+                </div>
+            </div>
+
+            <div id="errorMessage" class="text-center text-red-600 mt-4 hidden">
+                An error occurred. Please try again.
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="w-full bg-gray-100 py-4 px-6 border-t border-gray-200 mt-8">
+        <div class="max-w-4xl mx-auto text-center text-gray-500 text-sm">
+            © 2025 How to Write Like a Bureaucrat App. No rights reserved but connect with me on Linkedin at <a href="https://www.linkedin.com/in/han-fey-yap/" target="_blank" class="text-blue-600 hover:underline">Han Fey Yap</a>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Get references to DOM elements
+        const inputText = document.getElementById('inputText');
+        const audienceSelect = document.getElementById('audienceSelect');
+        const formatSelect = document.getElementById('formatSelect');
+        const applyStyleButton = document.getElementById('applyStyleButton');
+        // Removed references to summarizeButton and simplifyButton
+        const loadingMessage = document.getElementById('loadingMessage');
+        const outputText = document.getElementById('outputText'); // Now a div
+        const explanationOutput = document.getElementById('explanationOutput'); // Now a div
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Event listeners for the buttons
+        applyStyleButton.addEventListener('click', () => processContent('style'));
+        // Removed event listeners for summarizeButton and simplifyButton
+
+        /**
+         * Helper function to strip Markdown code block fences.
+         * @param {string} text - The text potentially containing Markdown code block fences.
+         * @returns {string} The text with fences removed.
+         */
+        function stripMarkdownCodeBlocks(text) {
+            // Regular expression to match ```html or ``` followed by optional newline at start/end
+            const htmlCodeBlockStart = /^```html\s*\n?/;
+            const codeBlockEnd = /\n?```\s*$/;
+
+            let cleanedText = text;
+
+            // Remove starting fence
+            if (htmlCodeBlockStart.test(cleanedText)) {
+                cleanedText = cleanedText.replace(htmlCodeBlockStart, '');
+            }
+
+            // Remove ending fence
+            if (codeBlockEnd.test(cleanedText)) {
+                cleanedText = cleanedText.replace(codeBlockEnd, '');
+            }
+
+            return cleanedText.trim(); // Trim any remaining whitespace
+        }
+
+
+        /**
+         * Generic function to handle content processing based on action type.
+         * @param {string} actionType - 'style', 'summarize', or 'simplify'.
+         */
+        async function processContent(actionType) {
+            const prompt = inputText.value.trim();
+            const selectedAudience = audienceSelect.value;
+            const selectedFormat = formatSelect.value;
+
+            // Clear previous messages and output
+            outputText.innerHTML = ''; // Changed to innerHTML
+            explanationOutput.innerHTML = ''; // Clear explanation output for div
+            errorMessage.classList.add('hidden');
+
+            if (!prompt) {
+                errorMessage.textContent = 'Please enter some content to process.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            // Show loading message and disable all buttons
+            loadingMessage.classList.remove('hidden');
+            applyStyleButton.disabled = true;
+            // Removed disabling for summarizeButton and simplifyButton
+            applyStyleButton.classList.add('opacity-50', 'cursor-not-allowed');
+            // Removed opacity/cursor classes for summarizeButton and simplifyButton
+
+            let userPrompt = '';
+            let styledText = ''; // To store the result of the first API call for styling
+
+            // --- RAG Integration Placeholder ---
+            let retrievedManualContent = []; // This array will now be populated by your backend
+
+            try {
+                // Call your backend to retrieve relevant chunks based on the user's input
+                const retrievalResponse = await fetch('http://127.0.0.1:5000/api/retrieve-style-manual-chunks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: prompt })
+                });
+                if (retrievalResponse.ok) {
+                    retrievedManualContent = await retrievalResponse.json(); // Expects an array of text chunks
+                } else {
+                    console.warn("Failed to retrieve relevant manual content from backend.");
+                    // Optionally, you might set a default message or handle this more gracefully
+                }
+            } catch (retrievalError) {
+                console.error("Error during RAG retrieval:", retrievalError);
+                // Optionally, set a default message or handle this more gracefully
+            }
+
+            const contextForLLM = retrievedManualContent.length > 0
+                ? `Refer to the following Australian Style Manual guidelines:\n\n---\n${retrievedManualContent.join("\n\n---\n")}\n---\n\n`
+                : '';
+            // --- End RAG Integration Placeholder ---
+
+            try {
+                // Since only 'style' action remains, we simplify the switch statement
+                // The actionType parameter can technically be removed from processContent if only one action exists
+                // but keeping it for now in case of future expansion.
+                if (actionType === 'style') {
+                    let briefFormatGuidance = '';
+                    if (selectedFormat === 'brief') {
+                        briefFormatGuidance = `
+                        The brief should start with a clear HTML <h2>Title</h2>.
+                        It typically includes sections such as:
+                        - <strong>Purpose/Issue:</strong> Briefly state the main issue or decision required.
+                        - <strong>Background:</strong> Provide concise, relevant context.
+                        - <strong>Analysis/Discussion:</strong> Detail the key considerations, options, and their implications.
+                        - <strong>Recommendations:</strong> Clearly state the proposed course of action.
+                        - <strong>Conclusion:</strong> Summarize key points.
+                        Ensure headings are clear and content is structured logically under these or similar headings using HTML <h3> or <h4> tags for sub-sections, and <strong> tags for bolding section titles.
+                        `;
+                    }
+                    // MODIFIED PROMPT: Added explicit instruction for Australian English and to avoid code block syntax.
+                    userPrompt = `${contextForLLM}You are an expert in the Australian Style Manual. Rewrite the following text to adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing. Your output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling. ${briefFormatGuidance}\n\n"${prompt}"`;
+                } else {
+                    // This else block should ideally not be hit if only 'style' button is present
+                    errorMessage.textContent = 'Invalid action type. Only "Apply Australian Style Manual" is supported.';
+                    errorMessage.classList.remove('hidden');
+                    return;
+                }
+
+                let chatHistory = [{ role: "user", parts: [{ text: userPrompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyDdcijUrbU2vVJKQb0EgMJwd07icD10sJQ"; // Replace with your actual Gemini API Key
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API error (first call): ${response.status} - ${errorData.error.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    styledText = result.candidates[0].content.parts[0].text;
+                    // Strip Markdown code block fences before setting innerHTML
+                    outputText.innerHTML = stripMarkdownCodeBlocks(styledText);
+                } else {
+                    throw new Error('No content found in the first API response.');
+                }
+
+                // Second API call for explanation, ONLY if actionType === 'style'
+                if (actionType === 'style') {
+                    // MODIFIED PROMPT: Explicitly asking for "before" and "after" examples within the HTML list.
+                    // Emphasizing to avoid Markdown code block syntax again.
+                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, using Australian English spelling, grammar, and phrasing. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks.`;
+                    
+                    let explanationChatHistory = [{ role: "user", parts: [{ text: explanationPrompt }] }];
+                    const explanationPayload = { contents: explanationChatHistory };
+
+                    try { // Add a try-catch specifically for the explanation API call
+                        const explanationResponse = await fetch(apiUrl, { // Reuse apiUrl
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(explanationPayload)
+                        });
+
+                        if (!explanationResponse.ok) {
+                            const errorData = await explanationResponse.json();
+                            throw new Error(`API error (explanation call): ${explanationResponse.status} - ${errorData.error.message || 'Unknown error'}`);
+                        }
+
+                        const explanationResult = await explanationResponse.json();
+                        if (explanationResult.candidates && explanationResult.candidates.length > 0 &&
+                            explanationResult.candidates[0].content && explanationResult.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            // Strip Markdown code block fences before setting innerHTML
+                            explanationOutput.innerHTML = stripMarkdownCodeBlocks(explanationResult.candidates[0].content.parts[0].text);
+                        } else {
+                            // If API call was OK but no content, set a specific message
+                            explanationOutput.innerHTML = 'The AI could not generate a detailed explanation of changes for this input.';
+                        }
+                    } catch (explanationError) {
+                        console.error("Error generating explanation:", explanationError);
+                        explanationOutput.innerHTML = `Error generating explanation: ${explanationError.message}.`;
+                    }
+                } else {
+                    // Ensure explanationOutput is explicitly cleared if not 'style' action
+                    explanationOutput.innerHTML = '';
+                }
+
+            } catch (error) {
+                console.error("Error processing content:", error);
+                errorMessage.textContent = `Error: ${error.message}. Please check your input and try again.`;
+                errorMessage.classList.remove('hidden');
+            } finally {
+                // Hide loading message and re-enable all buttons
+                loadingMessage.classList.add('hidden');
+                applyStyleButton.disabled = false;
+                // Removed disabling for summarizeButton and simplifyButton
+                applyStyleButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                // Removed opacity/cursor classes for summarizeButton and simplifyButton
+            }
+        }
+    </script>
+</body>
+</html>
