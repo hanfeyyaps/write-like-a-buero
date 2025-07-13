@@ -22,12 +22,12 @@
             border-radius: 10px;
         }
         .output-content-div::-webkit-scrollbar-thumb,
-        .explanation-output-div::-webkit-scrollbar-thumb {
+        .explanation-content-div::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 10px;
         }
         .output-content-div::-webkit-scrollbar-thumb:hover,
-        .explanation-output-div::-webkit-scrollbar-thumb:hover {
+        .explanation-content-div::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
         /* Common styling for output divs to mimic textarea look */
@@ -63,13 +63,32 @@
         }
         /* --- END FIX FOR DOT POINTS --- */
 
-        /* --- FIX FOR PARAGRAPH SPACING --- */
+        /* --- FIX FOR PARAGRAPH AND HEADING SPACING --- */
         /* Add margin to paragraphs within output divs for spacing */
         .output-content-div p,
         .explanation-output-div p {
             margin-bottom: 1rem; /* Adds 16px space below each paragraph */
         }
-        /* --- END FIX FOR PARAGRAPH SPACING --- */
+        /* Add margin to headings within output divs for spacing */
+        .output-content-div h2,
+        .explanation-output-div h2,
+        .output-content-div h3,
+        .explanation-output-div h3,
+        .output-content-div h4,
+        .explanation-output-div h4 {
+            margin-top: 1.5rem; /* Space above headings */
+            margin-bottom: 0.75rem; /* Space below headings */
+        }
+        /* Ensure the first heading doesn't have top margin if it's the very first element */
+        .output-content-div h2:first-child,
+        .explanation-output-div h2:first-child,
+        .output-content-div h3:first-child,
+        .explanation-output-div h3:first-child,
+        .output-content-div h4:first-child,
+        .explanation-output-div h4:first-child {
+            margin-top: 0;
+        }
+        /* --- END FIX FOR PARAGRAPH AND HEADING SPACING --- */
 
     </style>
 </head>
