@@ -118,6 +118,14 @@
                           placeholder="Paste your text here..."></textarea>
             </div>
 
+            <!-- New Author Name Input Field -->
+            <div class="mb-6">
+                <label for="authorNameInput" class="block text-gray-700 text-sm font-medium mb-2">Author Name (Optional):</label>
+                <input type="text" id="authorNameInput"
+                       class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out text-gray-800"
+                       placeholder="e.g., John Doe">
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <!-- Audience Selection -->
                 <div>
@@ -196,10 +204,10 @@
     <script type="module">
         // Get references to DOM elements
         const inputText = document.getElementById('inputText');
+        const authorNameInput = document.getElementById('authorNameInput'); // New reference
         const audienceSelect = document.getElementById('audienceSelect');
         const formatSelect = document.getElementById('formatSelect');
         const applyStyleButton = document.getElementById('applyStyleButton');
-        // Removed references to summarizeButton and simplifyButton
         const loadingMessage = document.getElementById('loadingMessage');
         const outputText = document.getElementById('outputText'); // Now a div
         const explanationOutput = document.getElementById('explanationOutput'); // Now a div
@@ -207,7 +215,6 @@
 
         // Event listeners for the buttons
         applyStyleButton.addEventListener('click', () => processContent('style'));
-        // Removed event listeners for summarizeButton and simplifyButton
 
         /**
          * Helper function to strip Markdown code block fences.
@@ -241,6 +248,7 @@
          */
         async function processContent(actionType) {
             const prompt = inputText.value.trim();
+            const authorName = authorNameInput.value.trim(); // Get author name
             const selectedAudience = audienceSelect.value;
             const selectedFormat = formatSelect.value;
 
@@ -294,10 +302,10 @@
                 // The actionType parameter can technically be removed from processContent if only one action exists
                 // but keeping it for now in case of future expansion.
                 if (actionType === 'style') {
-                    let briefFormatGuidance = '';
+                    let formatSpecificGuidance = ''; // New variable for dynamic guidance
                     if (selectedFormat === 'brief') {
-                        briefFormatGuidance = `
-                        The brief should start with a clear HTML <h2>Title</h2>.
+                        formatSpecificGuidance = `
+                        The brief should start with a clear HTML <h2><strong>Title</strong></h2>.
 
                         It typically includes sections such as:
                         - <strong>Purpose/Issue:</strong> Briefly state the main issue or decision required.
@@ -312,9 +320,56 @@
 
                         Ensure headings are clear and content is structured logically under these or similar headings using HTML <h3> or <h4> tags for sub-sections, and <strong> tags for bolding section titles.
                         `;
+                    } else if (selectedFormat === 'email') { // Added email specific guidance
+                        formatSpecificGuidance = `
+                        The email should be structured with a subject line, followed by a greeting, the body, and a signature block.
+
+                        Format:
+                        <p><strong>Subject: [Your Email Subject Here]</strong></p>
+                        <p>Dear [Recipient Name],</p>
+                        <p>[Email Body Content]</p>
+                        <p>Sincerely,</p>
+                        <p>${authorName ? authorName : '[Your Name/Department]'}</p>
+                        `;
+                    } else if (selectedFormat === 'report') { // Added report specific guidance
+                        formatSpecificGuidance = `
+                        The report should start with a clear HTML <h2><strong>Title</strong></h2>.
+                        ${authorName ? `<p><strong>Author: ${authorName}</strong></p>` : ''}
+                        It typically includes sections such as:
+                        - <strong>Executive Summary:</strong> A concise overview of the report's purpose, key findings, and recommendations.
+                        - <strong>Introduction:</strong> Background and context for the report.
+                        - <strong>Methodology:</strong> How the information was gathered or analysis conducted.
+                        - <strong>Findings:</strong> Detailed presentation of results or information.
+                        - <strong>Discussion:</strong> Analysis and interpretation of the findings.
+                        - <strong>Conclusion:</strong> Summary of key points.
+                        - <strong>Recommendations:</strong> Proposed actions based on findings and conclusions.
+                        Ensure headings are clear and content is structured logically under these or similar headings using HTML <h3> or <h4> tags for sub-sections, and <strong> tags for bolding section titles.
+                        `;
+                    } else if (selectedFormat === 'article') { // Added article specific guidance
+                        formatSpecificGuidance = `
+                        The article should start with a clear HTML <h2><strong>[Article Title Here]</strong></h2>.
+                        ${authorName ? `<p><strong>By: ${authorName}</strong></p>` : ''}
+                        The body of the article should be engaging and captivating for the target audience.
+                        Use HTML <p> tags for paragraphs.
+                        `;
+                    } else if (selectedFormat === 'policy document') { // Added policy document specific guidance
+                        formatSpecificGuidance = `
+                        The policy document should start with a clear HTML <h2><strong>[Policy Document Title Here]</strong></h2>.
+                        The body should be formal, clear, and comprehensive.
+                        Use HTML <p> tags for paragraphs and appropriate headings (<h3>, <h4>) for sections and sub-sections.
+                        `;
+                    } else if (selectedFormat === 'social media post') { // Added social media post specific guidance
+                        formatSpecificGuidance = `
+                        The social media post should be concise, engaging, and include a strong hook at the beginning.
+                        It should also include relevant hashtags at the end.
+                        Format:
+                        <p><strong>[Engaging Hook]</strong> [Post Body]</p>
+                        <p>[#hashtag1 #hashtag2 #hashtag3]</p>
+                        `;
                     }
                     // MODIFIED PROMPT: Added explicit instruction for Australian English and to avoid code block syntax.
-                    userPrompt = `${contextForLLM}You are an expert in the Australian Style Manual. Rewrite the following text to adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing. Your output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling. ${briefFormatGuidance}\n\n"${prompt}"`;
+                    // Now uses formatSpecificGuidance
+                    userPrompt = `${contextForLLM}You are an expert in the Australian Style Manual. Rewrite the following text to adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing. Your output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling. ${formatSpecificGuidance}\n\n"${prompt}"`;
 
                 } else {
                     // This else block should ideally not be hit if only 'style' button is present
@@ -325,8 +380,6 @@
 
                 let chatHistory = [{ role: "user", parts: [{ text: userPrompt }] }];
                 const payload = { contents: chatHistory };
-                // FIX: Replace this empty string with your actual Gemini API Key when deploying outside Canvas.
-                // For Canvas, it's automatically injected, but for external deployment, it's required.
                 const apiKey = "AIzaSyDdcijUrbU2vVJKQb0EgMJwd07icD10sJQ"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
@@ -373,7 +426,6 @@
                         }
 
                         const explanationResult = await explanationResponse.json();
-                        // FIX: Changed 'result.candidates' to 'explanationResult.candidates' here
                         if (explanationResult.candidates && explanationResult.candidates.length > 0 &&
                             explanationResult.candidates[0].content && explanationResult.candidates[0].content.parts &&
                             explanationResult.candidates[0].content.parts.length > 0) {
