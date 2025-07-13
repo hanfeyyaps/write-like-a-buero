@@ -22,12 +22,12 @@
             border-radius: 10px;
         }
         .output-content-div::-webkit-scrollbar-thumb,
-        .explanation-content-div::-webkit-scrollbar-thumb {
+        .explanation-output-div::-webkit-scrollbar-thumb { /* Corrected class name here */
             background: #888;
             border-radius: 10px;
         }
         .output-content-div::-webkit-scrollbar-thumb:hover,
-        .explanation-content-div::-webkit-scrollbar-thumb:hover {
+        .explanation-output-div::-webkit-scrollbar-thumb:hover { /* Corrected class name here */
             background: #555;
         }
         /* Common styling for output divs to mimic textarea look */
@@ -53,7 +53,8 @@
         .output-content-div ul,
         .explanation-output-div ul {
             list-style-type: disc; /* Force bullet points */
-            padding-left: 1.5rem; /* Add left padding for bullets to be visible */
+            list-style-position: outside; /* Ensure bullets are outside the content box */
+            padding-left: 2rem; /* Increase padding to ensure bullets are visible */
             margin-left: 0; /* Reset margin if Tailwind removes it, but keep padding */
         }
         /* Ensure list items themselves don't have excessive margin/padding if not needed */
@@ -257,9 +258,7 @@
             // Show loading message and disable all buttons
             loadingMessage.classList.remove('hidden');
             applyStyleButton.disabled = true;
-            // Removed disabling for summarizeButton and simplifyButton
             applyStyleButton.classList.add('opacity-50', 'cursor-not-allowed');
-            // Removed opacity/cursor classes for summarizeButton and simplifyButton
 
             let userPrompt = '';
             let styledText = ''; // To store the result of the first API call for styling
@@ -320,7 +319,7 @@
 
                 let chatHistory = [{ role: "user", parts: [{ text: userPrompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyDdcijUrbU2vVJKQb0EgMJwd07icD10sJQ"; // Replace with your actual Gemini API Key
+                const apiKey = ""; // API key set to empty string for Canvas to inject its own key
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -393,9 +392,7 @@
                 // Hide loading message and re-enable all buttons
                 loadingMessage.classList.add('hidden');
                 applyStyleButton.disabled = false;
-                // Removed disabling for summarizeButton and simplifyButton
                 applyStyleButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                // Removed opacity/cursor classes for summarizeButton and simplifyButton
             }
         }
     </script>
