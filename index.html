@@ -217,26 +217,27 @@
         applyStyleButton.addEventListener('click', () => processContent('style'));
 
         /**
-         * Helper function to strip Markdown code block fences.
-         * @param {string} text - The text potentially containing Markdown code block fences.
-         * @returns {string} The text with fences removed.
+         * Helper function to strip Markdown code block fences and convert Markdown bold to HTML bold.
+         * @param {string} text - The text potentially containing Markdown code block fences and bold syntax.
+         * @returns {string} The text with fences removed and Markdown bold converted to HTML bold.
          */
         function stripMarkdownCodeBlocks(text) {
-            // Regular expression to match ```html or ``` followed by optional newline at start/end
+            let cleanedText = text;
+
+            // 1. Remove Markdown code block fences (```html or ```)
             const htmlCodeBlockStart = /^```html\s*\n?/;
             const codeBlockEnd = /\n?```\s*$/;
 
-            let cleanedText = text;
-
-            // Remove starting fence
             if (htmlCodeBlockStart.test(cleanedText)) {
                 cleanedText = cleanedText.replace(htmlCodeBlockStart, '');
             }
-
-            // Remove ending fence
             if (codeBlockEnd.test(cleanedText)) {
                 cleanedText = cleanedText.replace(codeBlockEnd, '');
             }
+
+            // 2. Convert Markdown bold (**text**) to HTML strong (<strong>text</strong>)
+            // This regex matches **text** where text does not contain **
+            cleanedText = cleanedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
             return cleanedText.trim(); // Trim any remaining whitespace
         }
@@ -293,7 +294,10 @@
             }
 
             const contextForLLM = retrievedManualContent.length > 0
-                ? `Refer to the following Australian Style Manual guidelines:\n\n---\n${retrievedManualContent.join("\n\n---\n")}\n---\n\n`
+                ? `---
+Australian Style Manual Guidelines:
+${retrievedManualContent.join("\n\n---\n")}
+---`
                 : '';
             // --- End RAG Integration Placeholder ---
 
@@ -366,10 +370,34 @@
                         <p><strong>[Engaging Hook]</strong> [Post Body]</p>
                         <p>[#hashtag1 #hashtag2 #hashtag3]</p>
                         `;
+                    } else if (selectedFormat === 'press release') { // Added press release specific guidance
+                        formatSpecificGuidance = `
+                        The press release should have a clear HTML <h2><strong>FOR IMMEDIATE RELEASE</strong></h2> followed by the headline.
+                        It should then include a dateline (e.g., <p><strong>[CITY, STATE] – [Date]</strong></p>).
+                        The body should be concise, newsworthy, and written in a formal, objective tone.
+                        It should conclude with a "###" or "-END-" marker.
+                        `;
+                    } else if (selectedFormat === 'website content') { // Added website content specific guidance
+                        formatSpecificGuidance = `
+                        Website content should be clear, concise, and easy to scan.
+                        Use HTML <p> tags for paragraphs, and appropriate headings (<h2>, <h3>, <h4>) for structure.
+                        Consider using bullet points (<ul>, <li>) for lists of features or benefits.
+                        `;
                     }
-                    // MODIFIED PROMPT: Added explicit instruction for Australian English and to avoid code block syntax.
-                    // Now uses formatSpecificGuidance
-                    userPrompt = `${contextForLLM}You are an expert in the Australian Style Manual. Rewrite the following text to adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing. Your output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling. ${formatSpecificGuidance}\n\n"${prompt}"`;
+                    // UPDATED PROMPT: Stronger instructions for Chain of Thought and RAG adherence.
+                    // Removed "Original Text to Rewrite:" label.
+                    userPrompt = `You are an expert in the Australian Style Manual. Your task is to rewrite the provided text to strictly adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing.
+
+**Crucially, you must meticulously apply every relevant guideline from the 'Australian Style Manual Guidelines' section below to the input text.** Do NOT use any external knowledge or pre-trained information beyond these guidelines. If a specific transformation cannot be directly justified by the provided guidelines, you must not apply it and instead state that it cannot be done based on the manual.
+
+**IMPORTANT:** The 'Australian Style Manual Guidelines' provided are for your internal reference *only*. **DO NOT include these guidelines, their headings, or any meta-information about them in your final output.** Your final output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks or any labels like "Rewritten Text:". Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling.
+
+${contextForLLM}
+
+${formatSpecificGuidance}
+
+Please rewrite the following text:
+"${prompt}"`;
 
                 } else {
                     // This else block should ideally not be hit if only 'style' button is present
@@ -379,7 +407,12 @@
                 }
 
                 let chatHistory = [{ role: "user", parts: [{ text: userPrompt }] }];
-                const payload = { contents: chatHistory };
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        temperature: 0.2 // Lowered temperature for stricter adherence
+                    }
+                };
                 const apiKey = "AIzaSyDdcijUrbU2vVJKQb0EgMJwd07icD10sJQ"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
@@ -399,7 +432,7 @@
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
                     styledText = result.candidates[0].content.parts[0].text;
-                    // Strip Markdown code block fences before setting innerHTML
+                    // Strip Markdown code block fences and convert Markdown bold before setting innerHTML
                     outputText.innerHTML = stripMarkdownCodeBlocks(styledText);
                 } else {
                     throw new Error('No content found in the first API response.');
@@ -408,7 +441,7 @@
                 // Second API call for explanation, ONLY if actionType === 'style'
                 if (actionType === 'style') {
                     // MODIFIED PROMPT: Explicitly telling the model NOT to talk about HTML formatting changes.
-                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, using Australian English spelling, grammar, and phrasing. DO NOT discuss the presentation format or HTML tags used in the output. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks.`;
+                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, using Australian English spelling, grammar, and phrasing. DO NOT discuss the presentation format or HTML tags used in the output. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks. Ensure the explanation itself uses Australian English spelling, grammar, and phrasing. If no changes were made or could be identified, provide an empty response.`;
                     
                     let explanationChatHistory = [{ role: "user", parts: [{ text: explanationPrompt }] }];
                     const explanationPayload = { contents: explanationChatHistory };
@@ -429,15 +462,20 @@
                         if (explanationResult.candidates && explanationResult.candidates.length > 0 &&
                             explanationResult.candidates[0].content && explanationResult.candidates[0].content.parts &&
                             explanationResult.candidates[0].content.parts.length > 0) {
-                            // Strip Markdown code block fences before setting innerHTML
-                            explanationOutput.innerHTML = stripMarkdownCodeBlocks(explanationResult.candidates[0].content.parts[0].text);
+                            const explanationContent = explanationResult.candidates[0].content.parts[0].text.trim();
+                            // If the explanation content is empty, clear the div
+                            if (explanationContent) {
+                                explanationOutput.innerHTML = stripMarkdownCodeBlocks(explanationContent);
+                            } else {
+                                explanationOutput.innerHTML = ''; // Clear the div if no explanation
+                            }
                         } else {
-                            // If API call was OK but no content, set a specific message
-                            explanationOutput.innerHTML = 'The AI could not generate a detailed explanation of changes for this input.';
+                            // If API call was OK but no content, clear the div
+                            explanationOutput.innerHTML = '';
                         }
                     } catch (explanationError) {
                         console.error("Error generating explanation:", explanationError);
-                        explanationOutput.innerHTML = `Error generating explanation: ${explanationError.message}.`;
+                        explanationOutput.innerHTML = ''; // Clear the div on error
                     }
                 } else {
                     // Ensure explanationOutput is explicitly cleared if not 'style' action
