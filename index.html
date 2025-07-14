@@ -139,6 +139,7 @@
                         <option value="general public">General Public</option>
                         <option value="senior executives">Senior Executives</option>
                         <option value="minister">Minister</option>
+                        <option value="minister">Internal Staff</option>
                     </select>
                 </div>
 
@@ -147,7 +148,6 @@
                     <label for="formatSelect" class="block text-gray-700 text-sm font-medium mb-2">Output Format:</label>
                     <select id="formatSelect"
                             class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out text-gray-800">
-                        <option value="article">Article</option>
                         <option value="email">Email</option>
                         <option value="brief">Brief</option>
                         <option value="policy document">Policy Document</option>
@@ -356,13 +356,6 @@ ${retrievedManualContent.join("\n\n---\n")}
                         - Provide the evidence and background for the advice.
                         - Detail any consultation undertaken and what that consultation revealed. `    
                         ;
-                    } else if (selectedFormat === 'article') { // Added article specific guidance
-                        formatSpecificGuidance = `
-                        The article should start with a clear HTML <h2><strong>[Article Title Here]</strong></h2>.
-                        ${authorName ? `<p><strong>By: ${authorName}</strong></p>` : ''}
-                        The body of the article should be engaging and captivating for the target audience.
-                        Use HTML <p> tags for paragraphs.
-                        `;
                     } else if (selectedFormat === 'policy document') { // Added policy document specific guidance
                         formatSpecificGuidance = `
                         The policy document should start with a clear HTML <h2><strong>[Policy Document Title Here]</strong></h2>.
