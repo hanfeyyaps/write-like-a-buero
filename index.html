@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Write Like a Bureaucrat Bot</title>
+    <title>Write Like a Bureaucrat Bot (IM2025)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -98,7 +98,7 @@
     <header class="w-full bg-gray-100 shadow-sm py-4 px-6 border-b border-gray-200"> <!-- Changed header background to gray-100 -->
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center"> <!-- New flex container for title and its adjacent icon -->
-                <h1 class="text-2xl font-bold text-gray-800">Write Like a Bureaucrat Bot</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Write Like a Bureaucrat Bot (IM2025)</h1>
                 <!-- New Image Placeholder right beside the title -->
                 <img src="apsicon.png" alt="App Icon" class="rounded-full ml-2 h-9 w-9" title="Bureaucrat App Icon">
             </div>
@@ -181,10 +181,10 @@
 
             <!-- New section for explanation of changes - now a div -->
             <div class="mt-8">
-                <label for="explanationOutput" class="block text-gray-700 text-sm font-medium mb-2">Explanation of Changes (Australian Style Manual):</label>
+                <label for="explanationOutput" class="block text-gray-700 text-sm font-medium mb-2">Explanation of Changes (Australian Government Style Manual):</label>
                 <div id="explanationOutput"
                      class="explanation-output-div">
-                    <!-- Changes made based on the Australian Style Manual will be explained here... -->
+                    <!-- Changes made based on the Australian Government Style Manual will be explained here... -->
                 </div>
             </div>
 
@@ -197,7 +197,7 @@
     <!-- Footer Section -->
     <footer class="w-full bg-gray-100 py-4 px-6 border-t border-gray-200 mt-8">
         <div class="max-w-4xl mx-auto text-center text-gray-500 text-sm">
-            © 2025 How to Write Like a Bureaucrat App. No rights reserved but connect with me on Linkedin at <a href="https://www.linkedin.com/in/han-fey-yap/" target="_blank" class="text-blue-600 hover:underline">Han Fey Yap</a>
+            © 2025 How to Write Like a Bureaucrat Bot. No rights reserved but connect with me on Linkedin at <a href="https://www.linkedin.com/in/han-fey-yap/" target="_blank" class="text-blue-600 hover:underline">Han Fey Yap</a>
         </div>
     </footer>
 
@@ -386,9 +386,9 @@ ${retrievedManualContent.join("\n\n---\n")}
                     }
                     // UPDATED PROMPT: Stronger instructions for Chain of Thought and RAG adherence.
                     // Removed "Original Text to Rewrite:" label.
-                    userPrompt = `You are an expert in the Australian Style Manual. Your task is to rewrite the following text: "${prompt}" to strictly adhere to the principles of the Australian Style Manual, using Australian English spelling, grammar, and phrasing.
+                    userPrompt = `You are an expert in the Australian Government Style Manual. Your task is to rewrite the following text: "${prompt}" to strictly adhere to the principles of the Australian Government Style Manual, using Australian English spelling, grammar, and phrasing.
 
-**Crucially, you must meticulously apply every relevant guideline from the 'Australian Style Manual' section below to the input text.** Do NOT use any external knowledge or pre-trained information beyond these guidelines. If a specific transformation cannot be directly justified by the provided guidelines, you must not apply it and instead state that it cannot be done based on the manual.
+**Crucially, you must meticulously apply every relevant guideline from the 'Australian Government Style Manual' section below to the input text.** Do NOT use any external knowledge or pre-trained information beyond these guidelines. If a specific transformation cannot be directly justified by the provided guidelines, you must not apply it and instead state that it cannot be done based on the manual.
 
 **IMPORTANT:** The 'Australian Style Manual' provided are for your internal reference *only*. **DO NOT include these guidelines, their headings, or any meta-information about them in your final output.** Your final output MUST be ONLY the rewritten text, formatted as a ${selectedFormat} for a ${selectedAudience}, without any introductory or concluding remarks or any labels like "Rewritten Text:". **Absolutely DO NOT include the original input text or any part of this prompt in your final output.** Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Use only valid HTML tags for formatting (e.g., <strong> for bold, <p> for paragraphs, <h2>, <h3> for headings, <ul>, <li> for lists). Focus on clarity, conciseness, formal language, correct grammar, punctuation, and Australian English spelling.
 
@@ -438,7 +438,7 @@ ${formatSpecificGuidance}`;
                 // Second API call for explanation, ONLY if actionType === 'style'
                 if (actionType === 'style') {
                     // MODIFIED PROMPT: Explicitly telling the model NOT to talk about HTML formatting changes.
-                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, grammar, and phrasing. DO NOT discuss the presentation format or HTML tags used in the output. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks. Ensure the explanation itself uses Australian English spelling, grammar, and phrasing. IMPORTANT to include all types changes. If no changes were made, it does not have to be mentioned.`;
+                    const explanationPrompt = `Given the original text: "${prompt}" and the revised text (styled according to the Australian Government Style Manual): "${styledText}". Please provide a concise explanation of the key changes made to adhere to the Australian Style Manual, focusing on grammar, punctuation, spelling, and style adjustments, grammar, and phrasing. DO NOT discuss the presentation format or HTML tags used in the output. For each change, include a brief "Before:" and "After:" example of the specific words or short phrases that were modified. Present these changes as a valid HTML unordered list (<ul>) with each change as a list item (<li>). Use HTML <strong> tags for bolding key terms within the explanation. Absolutely DO NOT use Markdown formatting (e.g., **, *, #, or \`\`\`). Provide ONLY the HTML list, without any introductory or concluding remarks. Ensure the explanation itself uses Australian English spelling, grammar, and phrasing. IMPORTANT to include all types changes. If no changes were made, it does not have to be mentioned.`;
                     
                     let explanationChatHistory = [{ role: "user", parts: [{ text: explanationPrompt }] }];
                     const explanationPayload = { contents: explanationChatHistory };
