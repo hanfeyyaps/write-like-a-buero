@@ -1,11 +1,11 @@
-**Write Like a Bureaucrat App (IM2025)**
+**Write Like a Bureaucrat Bot (IM2025)**
 
-The 'Write Like a Bureaucrat App' is designed in line with Innovation Month 2025 to transform text provided by users into a formal, bureaucratic style, specifically adhering to the Australian Government Style Manual. It leverages a Retrieval Augmented Generation (RAG) architecture, grounding its AI responses to the official style guide to ensure accurate and relevant transformations, enhancing contextual relevant to the style guide. Users can specify their target audience and desired output format (e.g., email, report), and the app provides clear explanations of all changes made. This bot perfectly embodies the "Build a Bureaucrat Bot" challenge by automating the often routine task of formal communication, promoting adherence to established guidelines, and streamlining the creation of precise and formatted documentation.  
+The 'Write Like a Bureaucrat Bot' is designed in line with Innovation Month 2025 to transform text provided by users into a formal, bureaucratic style, specifically adhering to the Australian Government Style Manual. It leverages a Retrieval Augmented Generation (RAG) architecture, grounding its AI responses to the official style guide to ensure accurate and relevant transformations, enhancing contextual relevant to the style guide. Users can specify their target audience and desired output format (e.g., email, report), and the app provides clear explanations of all changes made. This bot perfectly embodies the "Build a Bureaucrat Bot" challenge by automating the often routine task of formal communication, promoting adherence to established guidelines, and streamlining the creation of precise and formatted documentation.  
 
 
 **Features**
 
-Content Transformation: Rewrites user-provided text into a formal, bureaucratic style based on the Australian Style Manual.
+Content Transformation: Rewrites user-provided text into a formal, bureaucratic style based on the Australian Government Style Manual.
 
 Audience and Format Selection: Allows users to specify the target audience (e.g., General Public, Senior Executives) and output format (e.g., Article, Email, Brief, Report) for tailored output.
 
@@ -13,7 +13,7 @@ Explanation of Changes: Provides a clear, itemized explanation of the specific s
 
 Australian English Adherence: Ensures all transformations and explanations use Australian English spelling, grammar, and phrasing.
 
-RAG-Grounded Responses: Utilizes Retrieval Augmented Generation (RAG) to ensure the AI's advice is directly informed by the Australian Style Manual's content, reducing hallucinations and increasing accuracy.
+RAG-Grounded Responses: Utilizes Retrieval Augmented Generation (RAG) to ensure the AI's advice is directly informed by the Australian Government Style Manual's content, reducing hallucinations and increasing accuracy.
 
 **Technologies Used**
 
@@ -33,7 +33,7 @@ Flask-CORS: Enables Cross-Origin Resource Sharing for frontend-backend communica
 
 Requests: For making HTTP requests to external APIs (e.g., Gemini API for embeddings).
 
-BeautifulSoup4: For web scraping the Australian Style Manual content.
+BeautifulSoup4: For web scraping the Australian Government Style Manual content.
 
 NumPy: For numerical operations, particularly with embeddings.
 
@@ -63,7 +63,7 @@ Receives user queries from the frontend.
 
 Generates embeddings for the user query using the text-embedding-004 model.
 
-Queries a Vertex AI Vector Search index (pre-populated with embeddings of the Australian Style Manual) to retrieve the most semantically relevant sections of the manual.
+Queries a Vertex AI Vector Search index (pre-populated with embeddings of the Australian Government Style Manual) to retrieve the most semantically relevant sections of the manual.
 
 Returns the retrieved content (text, URL, title) to the frontend.
 
@@ -88,7 +88,7 @@ Google Cloud Project with billing enabled.
 
 Vertex AI API and Cloud Storage API enabled in your GCP project.
 
-A Vertex AI Vector Search index populated with the Australian Style Manual content (refer to the model-grounding-guide and process-scraped-content-guide for detailed steps on web scraping, embedding generation, and index creation).
+A Vertex AI Vector Search index populated with the Australian Government Style Manual content (refer to the model-grounding-guide and process-scraped-content-guide for detailed steps on web scraping, embedding generation, and index creation).
 
 **Steps:**
 Clone the Repository (or create files):
@@ -128,7 +128,7 @@ Select Target Audience: Choose the intended audience for the transformed content
 
 Select Output Format: Choose the desired output document format from the dropdown (e.g., Article, Email, Brief, Report).
 
-Apply Style: Click the "Apply Australian Style Manual" button.
+Apply Style: Click the "Apply Australian Government Style Manual" button.
 
 View Output: The "Output" section will display the transformed text, and the "Explanation of Changes" section will detail the modifications made, linking back to the relevant style manual guidelines.
 
