@@ -1,6 +1,6 @@
 **Write Like a Bureaucrat App (IM2025)**
 
-This application helps users transform their natural language content into a formal, bureaucratic style, specifically adhering to the principles of the Australian Style Manual. It leverages a Retrieval Augmented Generation (RAG) architecture to ground the AI's responses in the official style guide, ensuring accurate and relevant transformations.
+The 'Write Like a Bureaucrat App' is designed in line with Innovation Month 2025 to transform text provided by users into a formal, bureaucratic style, specifically adhering to the Australian Government Style Manual. It leverages a Retrieval Augmented Generation (RAG) architecture, grounding its AI responses to the official style guide to ensure accurate and relevant transformations, enhancing contextual relevant to the style guide. Users can specify their target audience and desired output format (e.g., email, report), and the app provides clear explanations of all changes made. This bot perfectly embodies the "Build a Bureaucrat Bot" challenge by automating the often routine task of formal communication, promoting adherence to established guidelines, and streamlining the creation of precise and formatted documentation.  
 
 
 **Features**
