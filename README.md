@@ -1,4 +1,4 @@
-**How to Write Like a Bureaucrat App**
+**Write Like a Bureaucrat App (IM2025)**
 
 This application helps users transform their natural language content into a formal, bureaucratic style, specifically adhering to the principles of the Australian Style Manual. It leverages a Retrieval Augmented Generation (RAG) architecture to ground the AI's responses in the official style guide, ensuring accurate and relevant transformations.
 
