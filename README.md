@@ -1,30 +1,10 @@
-How to Write Like a Bureaucrat App
+**How to Write Like a Bureaucrat App**
+
 This application helps users transform their natural language content into a formal, bureaucratic style, specifically adhering to the principles of the Australian Style Manual. It leverages a Retrieval Augmented Generation (RAG) architecture to ground the AI's responses in the official style guide, ensuring accurate and relevant transformations.
 
-Table of Contents
-Features
 
-Technologies Used
+**Features**
 
-Architecture Overview
-
-Setup and Installation
-
-1. Backend Setup (Python Flask)
-
-2. Frontend Setup (HTML/JavaScript)
-
-Usage
-
-Deployment
-
-Contributing
-
-License
-
-Contact
-
-Features
 Content Transformation: Rewrites user-provided text into a formal, bureaucratic style based on the Australian Style Manual.
 
 Audience and Format Selection: Allows users to specify the target audience (e.g., General Public, Senior Executives) and output format (e.g., Article, Email, Brief, Report) for tailored output.
@@ -35,15 +15,16 @@ Australian English Adherence: Ensures all transformations and explanations use A
 
 RAG-Grounded Responses: Utilizes Retrieval Augmented Generation (RAG) to ensure the AI's advice is directly informed by the Australian Style Manual's content, reducing hallucinations and increasing accuracy.
 
-Technologies Used
-Frontend
+**Technologies Used**
+
+**Frontend**
 HTML5: Structure of the web application.
 
 CSS (Tailwind CSS): For responsive and modern styling.
 
 JavaScript (ES6+): Handles user interactions, API calls, and dynamic content rendering.
 
-Backend (Python Flask)
+**Backend (Python Flask)**
 Python 3.x: Core programming language.
 
 Flask: A lightweight web framework for the backend API.
@@ -58,7 +39,7 @@ NumPy: For numerical operations, particularly with embeddings.
 
 Google Cloud Vertex AI Client Libraries: For interacting with Vertex AI Vector Search (for RAG) and potentially other Vertex AI services.
 
-AI/Cloud Services
+**AI/Cloud Services**
 Google Gemini API (gemini-2.0-flash): Used for text generation (content transformation and explanation).
 
 Google Gemini API (text-embedding-004): Used for generating vector embeddings of text content.
@@ -71,7 +52,7 @@ Google Cloud Run: Serverless platform for deploying the Python Flask backend.
 
 Firebase Hosting: For hosting the static frontend web application.
 
-Architecture Overview
+**Architecture Overview**
 The application follows a client-server architecture with a RAG component:
 
 Frontend (HTML/JS): The user interface where users input text and select options. It sends requests to the Flask backend for content retrieval and directly to the Gemini API for text generation.
@@ -92,13 +73,13 @@ LLM Interaction (Gemini API): This augmented prompt is sent to the gemini-2.0-fl
 
 Output Display: The frontend receives and displays the transformed content and dynamically renders the explanation, including clickable links to the original style manual sources.
 
-Setup and Installation
+**Setup and Installation**
 This project involves setting up both a Python backend and a static HTML/JavaScript frontend.
 
 1. Backend Setup (Python Flask)
 The backend handles the RAG retrieval process.
 
-Prerequisites:
+**Prerequisites:**
 Python 3.8+ installed.
 
 pip (Python package installer).
@@ -109,7 +90,7 @@ Vertex AI API and Cloud Storage API enabled in your GCP project.
 
 A Vertex AI Vector Search index populated with the Australian Style Manual content (refer to the model-grounding-guide and process-scraped-content-guide for detailed steps on web scraping, embedding generation, and index creation).
 
-Steps:
+**Steps:**
 Clone the Repository (or create files):
 If you have a backend repository, clone it. Otherwise, create a directory for your backend and place app.py, requirements.txt, and Dockerfile within it.
 
@@ -118,7 +99,7 @@ Navigate to your backend directory in the terminal and install the required Pyth
 
 pip install -r requirements.txt
 
-Set Environment Variables:
+**Set Environment Variables:**
 Your app.py should read sensitive information from environment variables.
 
 GEMINI_API_KEY: Your Gemini API key for embeddings.
@@ -138,36 +119,7 @@ export INDEX_ENDPOINT_ID="your-index-endpoint-id"
 
 For production deployment on Cloud Run, these will be set during the gcloud run deploy command.
 
-Run Locally (Optional):
-To test the backend locally:
-
-flask run
-
-The backend will typically run on http://127.0.0.1:5000.
-
-2. Frontend Setup (HTML/JavaScript)
-The frontend is a single HTML file.
-
-Prerequisites:
-A web browser.
-
-A Gemini API key for text generation (this is directly used in the frontend JavaScript for simplicity in this demo, but for production, consider a backend proxy).
-
-Steps:
-Save index.html:
-Save the provided index.html code into a file named index.html on your computer.
-
-Update API Key:
-In index.html, locate the line const apiKey = "AIzaSyDdcijUrbU2vVJKQb0EgMJwd07icD10sJQ"; and replace the placeholder with your actual Gemini API key if it's different.
-
-Update Backend URL:
-If you're running the backend locally, ensure the fetch call in index.html points to your local Flask server (e.g., http://127.0.0.1:5000/api/retrieve-style-manual-chunks).
-If you've deployed your backend to Google Cloud Run, update this URL to your Cloud Run Service URL (e.g., https://your-bureaucrat-app-backend-xxxx-xx.run.app/api/retrieve-style-manual-chunks).
-
-Open in Browser:
-Open the index.html file in your web browser to run the application.
-
-Usage
+**Usage**
 Enter Your Content: Type or paste the text you want to transform into the "Your Content" textarea.
 
 Author Name (Optional): Provide an author name if desired, which can be used in some output formats (e.g., reports, articles).
@@ -180,22 +132,19 @@ Apply Style: Click the "Apply Australian Style Manual" button.
 
 View Output: The "Output" section will display the transformed text, and the "Explanation of Changes" section will detail the modifications made, linking back to the relevant style manual guidelines.
 
-Deployment
+**Deployment**
 The application is designed for deployment on Google Cloud Platform:
 
 Backend: Deployed as a containerized service on Google Cloud Run for serverless, scalable hosting. Refer to the google-cloud-deployment-guide for detailed deployment steps, including Dockerfile creation, image building, and service deployment.
 
 Frontend: Can be hosted on Firebase Hosting, GitHub Pages, Netlify, or Vercel as a static site. Firebase Hosting is recommended for seamless integration with other Google Cloud services.
 
-Contributing
+**Contributing**
 Contributions are welcome! If you have suggestions for improvements, new features, or bug fixes, please feel free to:
 
 Open an issue to discuss proposed changes.
 
 Submit a pull request with your enhancements.
 
-License
-This project is open-source and available under the MIT License.
-
-Contact
+**Contact**
 For questions or feedback, please connect with Han Fey Yap on LinkedIn.
