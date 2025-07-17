@@ -112,7 +112,7 @@
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl border border-gray-100">
             <h2 class="text-2xl font-semibold text-center text-gray-700 mb-4">Content Transformation Tool</h2>
             <p class="text-center text-gray-600 mb-8">
-                Enter your content below and we will bureaucratise it as part of Innovation Month 2025 (IM2025).
+                Enter your content in the box below and we will bureaucratise it by applying the Australian Government Style Manual. You will need to select your target audience and preferred format for the output. At the bottom of the window, there will be an area where the changes applied are explained in detail. This bot was created as part of Innovation Month 2025. 
             </p>
 
             <div class="mb-6">
@@ -162,7 +162,7 @@
             <div class="grid grid-cols-1 gap-4 mb-6"> <!-- Changed to grid-cols-1 as only one button remains -->
                 <button id="applyStyleButton"
                         class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-md transition duration-300 ease-in-out shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-                    Apply Australian Style Manual
+                    Apply Australian Government Style Manual
                 </button>
                 <!-- Removed Summarize and Simplify buttons -->
             </div>
@@ -398,7 +398,7 @@ ${formatSpecificGuidance}`;
 
                 } else {
                     // This else block should ideally not be hit if only 'style' button is present
-                    errorMessage.textContent = 'Invalid action type. Only "Apply Australian Style Manual" is supported.';
+                    errorMessage.textContent = 'Invalid action type. Only "Apply Australian Government Style Manual" is supported.';
                     errorMessage.classList.remove('hidden');
                     return;
                 }
