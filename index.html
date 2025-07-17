@@ -142,7 +142,7 @@
                     <label for="audienceSelect" class="block text-gray-700 text-sm font-medium mb-2">Target Audience:</label>
                     <select id="audienceSelect"
                             class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out text-gray-800">
-                        <option value="general public">General Public</option>
+                        <option value="everyday user">General Public</option>
                         <option value="senior executives">Senior Executives</option>
                         <option value="minister">Minister</option>
                         <option value="internal staff">Internal Staff</option>
@@ -373,6 +373,7 @@ ${retrievedManualContent.join("\n\n---\n")}
                     } else if (selectedFormat === 'social media post') { // Added social media post specific guidance
                         formatSpecificGuidance = `
                         **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
+                        
                         The social media post should be concise, engaging, and include a strong hook at the beginning.
                         It should also include relevant hashtags at the end.
                         Format:
@@ -390,6 +391,7 @@ ${retrievedManualContent.join("\n\n---\n")}
                     } else if (selectedFormat === 'website content') { // Added website content specific guidance
                         formatSpecificGuidance = `
                         **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
+                        
                         Website content should be clear, concise, and easy to scan.
                         Use HTML <p> tags for paragraphs, and appropriate headings (<h2>, <h3>, <h4>) for structure.
                         Consider using bullet points (<ul>, <li>) for lists of features or benefits.
