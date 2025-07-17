@@ -316,7 +316,7 @@ ${retrievedManualContent.join("\n\n---\n")}
                     if (selectedFormat === 'brief') {
                         formatSpecificGuidance = `
                         The brief should start with a clear HTML <h2><strong>Title</strong></h2>.
-
+                        **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
                         It typically includes sections such as:
                         - <strong>Purpose/Issue:</strong> Briefly state the main issue or decision required.
 
@@ -340,18 +340,20 @@ ${retrievedManualContent.join("\n\n---\n")}
                     } else if (selectedFormat === 'email') { // Added email specific guidance
                         formatSpecificGuidance = `
                         The email should be structured with a subject line, followed by a greeting, the body, and a signature block.
-
+                        **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
                         Format:
                         <p><strong>Subject: [Your Email Subject Here]</strong></p>
                         <p>Dear [Recipient Name],</p>
                         <p>[Email Body Content]</p>
                         <p>Sincerely,</p>
                         <p>${authorName ? authorName : '[Your Name/Department]'}</p>
+                        
                         `;
                     } else if (selectedFormat === 'report') { // Added report specific guidance
                         formatSpecificGuidance = `
                         The report should start with a clear HTML <h2><strong>Title</strong></h2>.
                         ${authorName ? `<p><strong>Author: ${authorName}</strong></p>` : ''}
+                        **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
                         It typically includes sections such as:
                         - <strong>Executive Summary:</strong> A concise overview of the report's purpose, key findings, and recommendations.
                         - <strong>Introduction:</strong> Background and context for the report.
@@ -370,6 +372,7 @@ ${retrievedManualContent.join("\n\n---\n")}
                         `;
                     } else if (selectedFormat === 'social media post') { // Added social media post specific guidance
                         formatSpecificGuidance = `
+                        **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
                         The social media post should be concise, engaging, and include a strong hook at the beginning.
                         It should also include relevant hashtags at the end.
                         Format:
@@ -378,6 +381,7 @@ ${retrievedManualContent.join("\n\n---\n")}
                         `;
                     } else if (selectedFormat === 'press release') { // Added press release specific guidance
                         formatSpecificGuidance = `
+                        **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
                         The press release should have a clear HTML <h2><strong>FOR IMMEDIATE RELEASE</strong></h2> followed by the headline.
                         It should then include a dateline (e.g., <p><strong>[CITY, STATE] – [Date]</strong></p>).
                         The body should be concise, newsworthy, and written in a formal, objective tone.
@@ -385,6 +389,7 @@ ${retrievedManualContent.join("\n\n---\n")}
                         `;
                     } else if (selectedFormat === 'website content') { // Added website content specific guidance
                         formatSpecificGuidance = `
+                        **IMPORTANT:** The 'Australian Government Style Manual' provided is for your internal reference *only*. **DO NOT include or regurgitate these guidelines, their headings, or any meta-information about them in your final output.**
                         Website content should be clear, concise, and easy to scan.
                         Use HTML <p> tags for paragraphs, and appropriate headings (<h2>, <h3>, <h4>) for structure.
                         Consider using bullet points (<ul>, <li>) for lists of features or benefits.
